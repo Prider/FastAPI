@@ -24,7 +24,6 @@ leads_collection = db['leads']
 
 email_base_url = os.environ['EMAIL_BASE_URL']
 
-
 class EmailSchema(BaseModel):
     email: EmailStr
     id: Optional[str]
@@ -39,19 +38,18 @@ class LeadSchema(BaseModel):
 
 def send_email(subject, message, to_address):
     # Your send_email logic, unchanged from before
-    from_address = 'ryan@smartbids.ai'
+    from_address = 'support@paoyaa.com'
     password = os.getenv("EMAIL_PASS")
     msg = MIMEMultipart()
     msg['From'] = "SmartBids.ai - Email verification <" + from_address + ">"
     msg['To'] = to_address
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'html'))
-    server = smtplib.SMTP_SSL('mail.privateemail.com', 465)
+    server = smtplib.SMTP_SSL('smtp.porkbun.com', 465)
     server.login(from_address, password)
     text = msg.as_string()
     server.sendmail(from_address, to_address, text)
     server.quit()
-
 
 @app.post("/create_lead")
 async def create_lead(lead: LeadSchema):
